@@ -28,7 +28,7 @@ app.use(express.static(path.join(rootdir,'public')));
 
 
 app.use(cors({
-  origin: ["https://todo.anubhavsingh.website"],
+  origin: ["https://todo-app-jade-six-65.vercel.app"],
   credentials: true,
 }));
 
@@ -45,3 +45,4 @@ mongoose.connect(mongoUrl).then(()=>{
 }).catch(err=>{
   console.log("Error while conniting mongoDb",err);
 })
+
