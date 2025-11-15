@@ -1,48 +1,42 @@
-//core module
-require('dotenv').config();
-const path=require('path');
+require("dotenv").config();
+const path = require("path");
 const cors = require("cors");
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
-//External module
-
-const express=require('express');
-const bodyParser = require('body-parser');
-const { default: mongoose } = require('mongoose');
-//==mongo url ==
+const app = express();
 const mongoUrl = process.env.MONGO_URI;
 const port = process.env.PORT || 3000;
 
-//Local module
-const rootdir=require('./utils/pathutils');
-const errorcontroler=require("./controllers/error");
-const todoRouter = require('./router/todoItemRouter');
+// Local Imports
+const rootdir = require("./utils/pathutils");
+const todoRouter = require("./router/todoItemRouter");
+const calenderRouter = require("./router/calenderRouter");
 
-
-//serever create
-const app=express();
-
-app.use(bodyParser.urlencoded({extended:true}));
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(rootdir,'public')));
 
-
-app.use(cors({
-  origin: ["https://todo-app-jade-six-65.vercel.app"],
-  credentials: true,
-}));
-
-
-app.use("/api/todo",todoRouter)
-app.use(errorcontroler.errorpage);
-
-
-mongoose.connect(mongoUrl).then(()=>{
-  console.log("<========  mongoDb connect Successfully =======>");
-  app.listen(port,()=>{
-    console.log(`Server Running At http://localhost:${port}`);
+app.use(
+  cors({
+    origin: ["https://todo-app-jade-six-65.vercel.app","https://task-ebon-three.vercel.app"],
+    credentials: true,
   })
-}).catch(err=>{
-  console.log("Error while conniting mongoDb",err);
-})
+);
 
+app.use(express.static(path.join(rootdir, "public")));
+
+// Routes
+app.use("/api/todo", todoRouter);
+app.use("/api/task", calenderRouter);
+
+// MongoDB Connect
+mongoose
+  .connect(mongoUrl)
+  .then(() => {
+    console.log("🚀 MongoDB Connected");
+    app.listen(port, () =>
+      console.log(`🔥 Server Running → http://localhost:${port}`)
+    );
+  })
+  .catch((err) => console.log("❌ MongoDB Error:", err));
