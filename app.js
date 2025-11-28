@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["https://todo-app-jade-six-65.vercel.app","https://task-ebon-three.vercel.app"],
+    origin: ["https://todo-app-jade-six-65.vercel.app","https://anubhav-task.vercel.app","http://localhost:3000"],
     credentials: true,
   })
 );
@@ -40,3 +40,4 @@ mongoose
     );
   })
   .catch((err) => console.log("❌ MongoDB Error:", err));
+
